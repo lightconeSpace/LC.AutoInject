@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>LC.AutoInject</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Lightcone</Authors>
+        <Company>LightconeSpace</Company>
+        <Product>LightconeSpace</Product>
+        <Description>AutoInject</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+        <PackageReference Include="morelinq" Version="3.4.2" />
+    </ItemGroup>
+</Project>
