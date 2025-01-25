@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.Loader;
 using AutoInject.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using MoreLinq.Extensions;
@@ -50,19 +51,20 @@ public static class ServiceCollectionExtension
     
     private static void LoadAllAssemblies()
     {
-        var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
-        var loadedAssemblyNames = new HashSet<string>(loadedAssemblies.Select(a => a.FullName)!);
+        string path = AppContext.BaseDirectory;
 
-        var referencedPaths = loadedAssemblies
-            .SelectMany(a => a.GetReferencedAssemblies())
-            .Distinct();
-
-        foreach (var assemblyName in referencedPaths)
+        foreach (string dll in Directory.GetFiles(path, "*.dll"))
         {
-            if (!loadedAssemblyNames.Contains(assemblyName.FullName))
+            try
             {
-                AppDomain.CurrentDomain.Load(assemblyName);
-                loadedAssemblyNames.Add(assemblyName.FullName);
+                if (!AssemblyLoadContext.Default.Assemblies.Any(a => a.GetName().Name == Path.GetFileNameWithoutExtension(dll)))
+                {
+                    Assembly assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" {dll}: {ex.Message}");
             }
         }
     }
